@@ -6,6 +6,8 @@ import glob
 import ctypes
 import sys
 import re
+import random
+import string
 from pathlib import Path
 from colorama import init
 
@@ -93,7 +95,26 @@ def perform_deletion_tasks():
     ]
     delete_registry_keys(registry_keys)
 
+def generate_random_string(length=8):
+    """Generate a random string of letters and digits."""
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+
+def rename_script():
+    """Rename the current script file to a random string."""
+    current_script = sys.argv[0]
+    script_dir = os.path.dirname(current_script)
+    new_name = generate_random_string() + '.py'
+    new_path = os.path.join(script_dir, new_name)
+    
+    try:
+        os.rename(current_script, new_path)
+        print(f"Script renamed to {new_name}")
+    except OSError as e:
+        print(f"Error renaming script: {e}")
+
 def main():
+    rename_script()
+
     os.system('title brembo.py')
     hostname = platform.node()
 
